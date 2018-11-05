@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanhuayan.petstore.dao.PetMapper">
+
+  <resultMap id="BaseResultMap" type="com.lanhuayan.petstore.entity.Pet">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="categoryId" jdbcType="INTEGER" property="categoryid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="photoUrls" jdbcType="VARCHAR" property="photourls" />
+    <result column="tagId" jdbcType="VARCHAR" property="tagid" />
+    <result column="Petstatus" jdbcType="VARCHAR" property="petstatus" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+    delete from pet
+    where id = #{id,jdbcType=INTEGER}
+
+  </delete>
+  <insert id="insert" parameterType="com.lanhuayan.petstore.entity.Pet">
+
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pet values (null ,#{categoryid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{photourls,jdbcType=VARCHAR}, #{tagid,jdbcType=VARCHAR}, #{petstatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lanhuayan.petstore.entity.Pet">
+    update pet
+    set categoryId = #{categoryid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      photoUrls = #{photourls,jdbcType=VARCHAR},
+      tagId = #{tagid,jdbcType=VARCHAR},
+      Petstatus = #{petstatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPetStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, categoryId, name, photoUrls, tagId, Petstatus
+    from pet
+    where Petstatus = #{status,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, categoryId, name, photoUrls, tagId, Petstatus
+    from pet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, categoryId, name, photoUrls, tagId, Petstatus
+    from pet
+  </select>
+
+</mapper>
